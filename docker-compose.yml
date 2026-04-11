@@ -5,13 +5,16 @@ services:
     build: .
     container_name: aliclic-cobertura-api
     restart: always
-    ports:
-      - "8000:8000"
-    volumes:
-      # Sincroniza tu carpeta local de datos con la del contenedor
-      - ./data:/app/data
     environment:
-      # Configura la zona horaria para los registros (Perú)
       - TZ=America/Lima
-      - PYTHONDONTWRITEBYTECODE=1
-      - PYTHONUNBUFFERED=1
+    networks:
+      - n8n_default # Usa la misma red que n8n-traefik-1
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cobertura.rule=Host(`coordenadas.tuimagen-viral.com`)"
+      - "traefik.http.routers.cobertura.entrypoints=web" # Cambia a websecure si ya tienes SSL
+      - "traefik.http.services.cobertura.loadbalancer.server.port=8000"
+
+networks:
+  n8n_default:
+    external: true
