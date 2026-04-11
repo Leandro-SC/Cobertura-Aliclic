@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  aliclic-api:
+    build: .
+    container_name: aliclic-cobertura-api
+    restart: always
+    ports:
+      - "8000:8000"
+    volumes:
+      # Sincroniza tu carpeta local de datos con la del contenedor
+      - ./data:/app/data
+    environment:
+      # Configura la zona horaria para los registros (Perú)
+      - TZ=America/Lima
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1
